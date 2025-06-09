@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: payoww/kernel_xiaomi_rosemary
-          ref: a6eb596
+          ref: main
           submodules: true
 
       - name: Install Dependencies
