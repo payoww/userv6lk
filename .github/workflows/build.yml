@@ -22,10 +22,10 @@ jobs:
 
       - name: Download Clang Toolchain
         run: |
-          mkdir clang && cd clang
-          wget https://github.com/ClangBuiltLinux/tc-build/releases/download/2024.04.20/clang+llvm-18.1.5-x86_64-linux-gnu.tar.xz
-          tar -xf clang+llvm-18.1.5-x86_64-linux-gnu.tar.xz
-          echo "CLANG_PATH=$(pwd)/clang+llvm-18.1.5-x86_64-linux-gnu" >> $GITHUB_ENV
+          mkdir -p toolchains && cd toolchains
+          wget https://github.com/ZyCromerZ/Clang/releases/download/17.0.2-Stable/Clang-17.0.2-Stable.tar.gz
+          tar -xvzf Clang-17.0.2-Stable.tar.gz
+          echo "CLANG_PATH=$(pwd)/Clang-17.0.2-Stable" >> $GITHUB_ENV
 
       - name: Compile Kernel
         run: |
