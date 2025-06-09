@@ -20,12 +20,12 @@ jobs:
           sudo apt install -y bc bison flex libssl-dev make libncurses5-dev ccache \
             git wget curl build-essential zip libelf-dev
 
-      - name: Download Clang Toolchain
+      - name: Download Clang 17.0.2
         run: |
           mkdir -p toolchains && cd toolchains
-          wget https://github.com/ZyCromerZ/Clang/releases/download/17.0.2-Stable/Clang-17.0.2-Stable.tar.gz
-          tar -xvzf Clang-17.0.2-Stable.tar.gz
-          echo "CLANG_PATH=$(pwd)/Clang-17.0.2-Stable" >> $GITHUB_ENV
+    wget https://software.frc971.org/Build-Dependencies/github.com/llvm/llvm-project/releases/download/llvmorg-17.0.2/clang+llvm-17.0.2-x86_64-linux-gnu-ubuntu-22.04.tar.xz
+    tar -xvJf clang+llvm-17.0.2-x86_64-linux-gnu-ubuntu-22.04.tar.xz
+    echo "CLANG_PATH=$(pwd)/clang+llvm-17.0.2-x86_64-linux-gnu-ubuntu-22.04" >> $GITHUB_ENV
 
       - name: Compile Kernel
         run: |
