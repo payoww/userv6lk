@@ -42,7 +42,7 @@ jobs:
             CLANG_TRIPLE=aarch64-linux-gnu-
 
       - name: Upload Kernel Image
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: rosemary-kernel-image
           path: out/arch/arm64/boot/Image
