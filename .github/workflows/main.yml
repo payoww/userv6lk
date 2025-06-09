@@ -1,0 +1,49 @@
+name: Kernel Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Kernel Source
+        uses: actions/checkout@v3
+        with:
+          repository: fjrXTR/android_kernel_xiaomi_rosemary
+          ref: patch-1
+          submodules: true
+
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y bc bison flex libssl-dev make libncurses5-dev ccache \
+            git wget curl build-essential zip libelf-dev
+
+      - name: Download Clang Toolchain
+        run: |
+          mkdir clang && cd clang
+          wget https://github.com/ClangBuiltLinux/tc-build/releases/download/2024.04.20/clang+llvm-18.1.5-x86_64-linux-gnu.tar.xz
+          tar -xf clang+llvm-18.1.5-x86_64-linux-gnu.tar.xz
+          echo "CLANG_PATH=$(pwd)/clang+llvm-18.1.5-x86_64-linux-gnu" >> $GITHUB_ENV
+
+      - name: Compile Kernel
+        run: |
+          export ARCH=arm64
+          export SUBARCH=arm64
+          export CLANG_TRIPLE=aarch64-linux-gnu-
+          export CROSS_COMPILE=aarch64-linux-gnu-
+          export PATH=$CLANG_PATH/bin:$PATH
+
+          make O=out rosemary_defconfig
+          make -j$(nproc) O=out \
+            CC=clang \
+            CROSS_COMPILE=aarch64-linux-gnu- \
+            CLANG_TRIPLE=aarch64-linux-gnu-
+
+      - name: Upload Kernel Image
+        uses: actions/upload-artifact@v3
+        with:
+          name: rosemary-kernel-image
+          path: out/arch/arm64/boot/Image
+          
